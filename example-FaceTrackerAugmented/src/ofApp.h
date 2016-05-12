@@ -11,6 +11,10 @@ protected:
     ofVec2f cur, smooth;
     ofPolyline all;
     ofxDLib::Face face;
+    float startedDying;
+    
+    int colorR;
+    
 public:
     FaceAugmented(){
     };
@@ -19,6 +23,7 @@ public:
     void setImage(const ofPixels & pixels);
     void kill();
     void draw();
+    void setColor(int r);
 };
 
 

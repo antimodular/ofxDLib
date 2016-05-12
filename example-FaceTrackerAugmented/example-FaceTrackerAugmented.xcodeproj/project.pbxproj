@@ -52,7 +52,7 @@
 		41D5C4FA48CDFC5B93AA1B46 /* FaceTracker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = FaceTracker.cpp; path = ../../../addons/ofxDLib/src/FaceTracker.cpp; sourceTree = SOURCE_ROOT; };
 		5D86412758A0D0D8438DA31A /* ObjectTracker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ObjectTracker.cpp; path = ../../../addons/ofxDLib/src/ObjectTracker.cpp; sourceTree = SOURCE_ROOT; };
 		6A5FA08668E8411EF3B45E3C /* FaceTracker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FaceTracker.h; path = ../../../addons/ofxDLib/src/FaceTracker.h; sourceTree = SOURCE_ROOT; };
-		D47407081CCEA37700C8DB7A /* Tracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Tracker.h; path = ../../../addons/ofxDLib/src/Tracker.h; sourceTree = "<group>"; };
+		948D96D61CCD5014002BCE89 /* Tracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Tracker.h; path = ../src/Tracker.h; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* example-FaceTrackerAugmentedDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "example-FaceTrackerAugmentedDebug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
@@ -120,7 +120,7 @@
 		BD8058CEE3E8DAAFC84799C7 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				D47407081CCEA37700C8DB7A /* Tracker.h */,
+				948D96D61CCD5014002BCE89 /* Tracker.h */,
 				41D5C4FA48CDFC5B93AA1B46 /* FaceTracker.cpp */,
 				6A5FA08668E8411EF3B45E3C /* FaceTracker.h */,
 				5D86412758A0D0D8438DA31A /* ObjectTracker.cpp */,
@@ -392,7 +392,6 @@
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
@@ -427,7 +426,6 @@
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",

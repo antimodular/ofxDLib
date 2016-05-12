@@ -51,7 +51,6 @@ void FaceTracker::findFaces(const ofPixels& pixels, bool bUpscale) {
         facesCur.push_back(face);
     }
     tracker.track(facesCur);
-
 }
 
 //--------------------------------------------------------------
@@ -186,10 +185,6 @@ void FaceTracker::draw() {
     
     for (auto & face : this->getFaces()) {
         ofDrawBitmapString(ofToString(face.label), face.rect.getTopLeft());
-//          ofDrawBitmapString(ofToString(face.velocity), face.rect.getTopLeft()+ofPoint(-30,20));
-    
-
-        
         ofDrawRectangle(face.rect);
         
         switch (drawStyle) {
