@@ -63,7 +63,6 @@ namespace ofxDLib {
             }
         }
         unsigned int getLastSeen() const {
-//            ofLog()<<"lastSeen "<<lastSeen;
             return lastSeen;
         }
         unsigned long getAge() const {

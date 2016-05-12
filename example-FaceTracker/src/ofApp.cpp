@@ -11,7 +11,7 @@ void ofApp::setup(){
 void ofApp::update(){
     video.update();
     if(video.isFrameNew()){
-        ft.findFaces(video.getPixels(),false);
+        ft.findFaces(video.getPixels());
     }
 }
 

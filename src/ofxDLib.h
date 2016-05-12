@@ -40,7 +40,6 @@ static vector<ofRectangle> toOf(const vector<dlib::rectangle>& r){
     return out;
 }
 //------------------------------------------------------------------------
-
 static void toDLib(const ofPixels& inPix, dlib::array2d<dlib::rgb_pixel>& outPix){
     
     int width = inPix.getWidth();
@@ -102,8 +101,6 @@ static bool toOf(const dlib::array2d<unsigned char>& inPix, ofPixels& outPix){
     return true;
 }
     
-    
-
     //*/
 ////------------------------------------------------------------------------
 //void toOf(const array2d<rgb_pixel>& inPix, ofPixels& outPix){
