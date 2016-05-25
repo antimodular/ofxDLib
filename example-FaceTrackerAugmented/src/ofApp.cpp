@@ -102,14 +102,21 @@ void ofApp::update(){
             face.setImage(video.getPixels());
             face.setColor(ofMap(mouseX, 0, ofGetWidth(), 0, 255));
         }
+         for(int i=0; i < tracker.size(); i++) {
+             int label = tracker.getLabel(i);
+        tracker.setSmoothingRate(label, ofMap(mouseX,0,ofGetWidth(),0,1,true));
+         }
         // amount of movement regulates smoothing rate
-        for(int i=0; i < tracker.size(); i++) {
-            int label = tracker.getLabel(i);
-            int length = tracker.getVelocity(i).length();
-            length = length < 10 ? length : 10; // arbitrarily choosen
-            float smoothingRate = ofMap(length, 0, 10, 0.35, 1);
-            tracker.setSmoothingRate(label, smoothingRate);
-        }
+//        for(int i=0; i < tracker.size(); i++) {
+//            int label = tracker.getLabel(i);
+//            int length = tracker.getVelocity(i).length();
+//            length = length < 10 ? length : 10; // arbitrarily choosen
+//            float smoothingRate = ofMap(length, 0, 10, 0.35, 1);
+//            tracker.setSmoothingRate(label, smoothingRate);
+//        }
+        
+//         tracker.setSmoothingRate(ofMap(mouseX,0,ofGetWidth(),0,1));
+//        ofLog()<<"smootingRate "<<tracker.getSmoothingRate();
     }
 }
 

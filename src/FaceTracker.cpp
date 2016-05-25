@@ -35,6 +35,11 @@ void FaceTracker::findFaces(const ofPixels& pixels, bool bUpscale) {
     toDLib(pixels, img);
     if (bUpscale) pyramid_up(img);
     
+
+    
+    dlibImg_width = img.nc();
+    dlibImg_height = img.nr();
+    
     std::vector<dlib::rectangle> dets = detector(img);
     std::vector<Face> facesCur;
     for (int i=0; i<dets.size(); i++) {
@@ -50,7 +55,9 @@ void FaceTracker::findFaces(const ofPixels& pixels, bool bUpscale) {
         
         facesCur.push_back(face);
     }
+    
     tracker.track(facesCur);
+    
 }
 
 //--------------------------------------------------------------
@@ -85,6 +92,12 @@ vector<Face> FaceTracker::getFaces() {
     return faces;
 }
 
+int FaceTracker::getWidth(){
+    return dlibImg_width;
+}
+int FaceTracker::getHeight(){
+    return dlibImg_height;
+}
 //--------------------------------------------------------------
 ofRectangle FaceTracker::getRectangle(unsigned int i) {
     unsigned int label = tracker.getLabelFromIndex(i);
@@ -263,6 +276,8 @@ Face& FaceTracker::assignFeatures(Face & face) {
         }
         face.innerMouth.addVertex(face.landmarks[60]);
         face.innerMouth.close();
+// face.upperLipCenter = face.innerMouth.getCentroid2D(); // face.innerMouth[1];
+        face.upperLipCenter =  face.innerMouth[1];
     }
     
     return face;

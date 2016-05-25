@@ -24,7 +24,7 @@ namespace ofxDLib {
         int label;
         int age;
         ofRectangle rect;
-        ofVec2f velocity, leftEyeCenter, rightEyeCenter;
+        ofVec2f velocity, leftEyeCenter, rightEyeCenter,upperLipCenter;
         ofPolyline leftEye, rightEye, innerMouth, outerMouth, leftEyebrow, rightEyebrow, jaw, noseBridge, noseTip;
         vector<ofVec3f> landmarks;
     } Face;
@@ -138,6 +138,9 @@ namespace ofxDLib {
         ShapeTracker tracker;
         
         Face& assignFeatures(Face & face);
+        
+        int dlibImg_width, dlibImg_height;
+        
     public:
         FaceTracker();
         void setup(string predictorDatFilePath);
@@ -158,7 +161,8 @@ namespace ofxDLib {
         float getSmoothingRate(unsigned int label);
         void setDrawStyle(DrawStyle style);
         void draw();
-
+        int getWidth();
+        int getHeight();
     };
     
     
