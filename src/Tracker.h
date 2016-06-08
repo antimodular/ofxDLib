@@ -300,7 +300,6 @@ namespace ofxDLib {
                 const ofRectangle& cur = getCurrent(label);
                 if(smoothed.count(label) > 0) {
                     ofRectangle& smooth = smoothed[label];
-                    ofLogNotice("tracker.h")<<"smoothingRate "<<smoothingRate;
                     smooth.x = ofLerp(smooth.x, cur.x, smoothingRate);
                     smooth.y = ofLerp(smooth.y, cur.y, smoothingRate);
                     smooth.width = ofLerp(smooth.width, cur.width, smoothingRate);

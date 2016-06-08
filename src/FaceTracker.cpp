@@ -13,6 +13,7 @@ FaceTracker::FaceTracker() {
     smoothingRate = 0.5;
     drawStyle = lines;
     tracker.setSmoothingRate(smoothingRate);
+//    tracker.setROIrect(ofRectangle(0,0,320,240));
 }
 
 //--------------------------------------------------------------
@@ -30,8 +31,9 @@ void FaceTracker::setup(string predictorDatFilePath) {
 }
 
 //--------------------------------------------------------------
-void FaceTracker::findFaces(const ofPixels& pixels, bool bUpscale) {
-    dlib::array2d<dlib::rgb_pixel> img;
+void FaceTracker::findFaces(const ofPixels& pixels, ofRectangle _roiRect, bool bUpscale) {
+//void FaceTracker::findFaces(const ofPixels& pixels, bool bUpscale) {
+dlib::array2d<dlib::rgb_pixel> img;
     toDLib(pixels, img);
     if (bUpscale) pyramid_up(img);
     
@@ -43,25 +45,24 @@ void FaceTracker::findFaces(const ofPixels& pixels, bool bUpscale) {
     std::vector<dlib::rectangle> dets = detector(img);
     std::vector<Face> facesCur;
     for (int i=0; i<dets.size(); i++) {
-        dlib::full_object_detection shapes = predictor(img, dets[i]);
-        vector<ofVec3f> landmarks;
-        for (int j=0; j<shapes.num_parts(); j++) {
-            ofVec3f p(shapes.part(j).x(), shapes.part(j).y(), 0);
-            landmarks.push_back(p);
+        if(_roiRect.inside(toOf(dets[i]).getCenter())){
+            dlib::full_object_detection shapes = predictor(img, dets[i]);
+            vector<ofVec3f> landmarks;
+            for (int j=0; j<shapes.num_parts(); j++) {
+                ofVec3f p(shapes.part(j).x(), shapes.part(j).y(), 0);
+                landmarks.push_back(p);
+            }
+            //
+            Face face;
+            face.rect = toOf(dets[i]);
+            face.landmarks = landmarks;
+            
+            facesCur.push_back(face);
         }
-        Face face;
-        face.rect = toOf(dets[i]);
-        face.landmarks = landmarks;
-        
-        facesCur.push_back(face);
     }
     
     tracker.track(facesCur);
     
-    
-    dlib::array2d<unsigned char> gimg;
-    assign_image(img,gimg);
-    toOf(gimg,dlibImg);
 }
 
 //--------------------------------------------------------------
@@ -82,6 +83,7 @@ Face FaceTracker::getFace(unsigned int i) {
     face.label = label;
     face.age = tracker.getAge(label);
     face.velocity = tracker.getVelocity(i);
+    face.rawVelocity = tracker.getRawVelocity(i);
     face = assignFeatures(face);
     
     return face;
@@ -101,9 +103,6 @@ int FaceTracker::getWidth(){
 }
 int FaceTracker::getHeight(){
     return dlibImg_height;
-}
-ofPixels FaceTracker::getPixels(){
-    return dlibImg;
 }
 //--------------------------------------------------------------
 ofRectangle FaceTracker::getRectangle(unsigned int i) {
@@ -170,6 +169,9 @@ int FaceTracker::getIndexFromLabel(unsigned int label) {
 ofVec2f FaceTracker::getVelocity(unsigned int i) {
     return tracker.getVelocity(i);
 }
+ofVec2f FaceTracker::getRawVelocity(unsigned int i) {
+    return tracker.getRawVelocity(i);
+}
 
 //--------------------------------------------------------------
 void FaceTracker::setSmoothingRate(float smoothingRate) {
@@ -190,6 +192,11 @@ float FaceTracker::getSmoothingRate() {
 float FaceTracker::getSmoothingRate(unsigned int label) {
     return tracker.getSmoothingRate(label);
 }
+
+////--------------------------------------------------------------
+//void FaceTracker::setROIrect(ofRectangle _rect) {
+//    return tracker.setROIrect(_rect);
+//}
 
 //--------------------------------------------------------------
 void FaceTracker::setDrawStyle(DrawStyle style) {

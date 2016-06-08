@@ -24,7 +24,7 @@ namespace ofxDLib {
         int label;
         int age;
         ofRectangle rect;
-        ofVec2f velocity, leftEyeCenter, rightEyeCenter,upperLipCenter;
+        ofVec2f velocity,rawVelocity, leftEyeCenter, rightEyeCenter,upperLipCenter;
         ofPolyline leftEye, rightEye, innerMouth, outerMouth, leftEyebrow, rightEyebrow, jaw, noseBridge, noseTip;
         vector<ofVec3f> landmarks;
     } Face;
@@ -38,12 +38,16 @@ namespace ofxDLib {
     class ShapeTracker : public Tracker<Face> {
     protected:
         float initSmoothingRate;
+//        ofRectangle roiRect;
         std::map<unsigned int, float> smoothingRate;
         std::map<unsigned int, Face> smoothed;
     public:
         ShapeTracker()
         :initSmoothingRate(.5) {
         }
+//        void setROIrect(ofRectangle _rect) {
+//            this->roiRect = _rect;
+//        }
         void setSmoothingRate(float smoothingRate) {
             this->initSmoothingRate = smoothingRate;
         }
@@ -65,7 +69,6 @@ namespace ofxDLib {
                 const Face& cur = getCurrent(label);
                 const float smoothingRateCur = getSmoothingRate(label);
                 if(smoothed.count(label) > 0) {
-//                    ofLogNotice("facetracker.h")<<"smoothingRateCur "<<smoothingRateCur;
                     Face& smooth = smoothed[label];
                     smooth.rect.x = ofLerp(smooth.rect.x, cur.rect.x, smoothingRateCur);
                     smooth.rect.y = ofLerp(smooth.rect.y, cur.rect.y, smoothingRateCur);
@@ -124,6 +127,34 @@ namespace ofxDLib {
                 return ofVec2f(0, 0);
             }
         }
+        ofVec2f getRawVelocity(unsigned int i) const {
+            unsigned int label = getLabelFromIndex(i);
+            if(existsCurrent(label) && existsPrevious(label)) {
+//                const Face& previous = getPrevious(label);
+                const Face& current = getCurrent(label);
+                
+//                const float prvX = previous.rect.x;
+//                const float prvY = previous.rect.y;
+//                const float prvW = previous.rect.width;
+//                const float prvH = previous.rect.height;
+//                const float pX = prvX + (prvW / 2.0);
+//                const float pY = prvY + (prvH / 2.0);
+//                ofVec2f previousPosition(pX, pY);
+                
+                const float curX = current.rect.x;
+                const float curY = current.rect.y;
+                const float curW = current.rect.width;
+                const float curH = current.rect.height;
+                const float cX = curX + (curW / 2.0);
+                const float cY = curY + (curH / 2.0);
+                ofVec2f currentPosition(cX, cY);
+                
+                return currentPosition;// - previousPosition;
+            } else {
+                return ofVec2f(0, 0);
+            }
+        }
+
     };
     
     class FaceTracker {
@@ -141,11 +172,12 @@ namespace ofxDLib {
         Face& assignFeatures(Face & face);
         
         int dlibImg_width, dlibImg_height;
-        ofPixels dlibImg;
+        
     public:
         FaceTracker();
         void setup(string predictorDatFilePath);
-        void findFaces(const ofPixels& pixels, bool bUpscale = false);
+        void findFaces(const ofPixels& pixels,ofRectangle _roiRect, bool bUpscale = false);
+//  void findFaces(const ofPixels& pixels, bool bUpscale = false);
         unsigned int size();
         ShapeTracker& getTracker();
         Face getFace(unsigned int i);
@@ -156,6 +188,7 @@ namespace ofxDLib {
         unsigned int getLabel(unsigned int i);
         int getIndexFromLabel(unsigned int label);
         ofVec2f getVelocity(unsigned int i);
+        ofVec2f getRawVelocity(unsigned int i);
         void setSmoothingRate(float smoothingRate);
         void setSmoothingRate(unsigned int label, float smoothingRate);
         float getSmoothingRate();
@@ -164,7 +197,8 @@ namespace ofxDLib {
         void draw();
         int getWidth();
         int getHeight();
-        ofPixels getPixels();
+        
+//        void setROIrect(ofRectangle _rect);
     };
     
     
@@ -175,9 +209,11 @@ namespace ofxDLib {
         std::vector<F> followers;
     public:
         FaceTrackerFollower() : FaceTracker() {};
-        const std::vector<unsigned int>& findFaces(const ofPixels& pixels, bool bUpscale = false) {
-            FaceTracker::findFaces(pixels);
-            ShapeTracker & tracker = FaceTracker::getTracker();
+        const std::vector<unsigned int>& findFaces(const ofPixels& pixels, ofRectangle _roiRect, bool bUpscale = false) {
+//const std::vector<unsigned int>& findFaces(const ofPixels& pixels, bool bUpscale = false) {
+        FaceTracker::findFaces(pixels, _roiRect);
+//  FaceTracker::findFaces(pixels);
+    ShapeTracker & tracker = FaceTracker::getTracker();
             
             // kill missing, update old
             for(int i = 0; i < labels.size(); i++) {
@@ -190,6 +226,7 @@ namespace ofxDLib {
                     face.label = curLabel;
                     face.age = tracker.getAge(curLabel);
                     face.velocity = tracker.getVelocity(i);
+                    face.rawVelocity = tracker.getRawVelocity(i);
                     face = FaceTracker::assignFeatures(face);
                     
                     curFollower.update(face);
@@ -202,6 +239,7 @@ namespace ofxDLib {
                 face.label = curLabel;
                 face.age = tracker.getAge(curLabel);
                 face.velocity = tracker.getVelocity(index);
+                face.rawVelocity = tracker.getRawVelocity(index);
                 face = FaceTracker::assignFeatures(face);
                 
                 labels.push_back(curLabel);
