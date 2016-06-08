@@ -14,6 +14,7 @@ protected:
     float startedDying;
     
     int colorR;
+    int age;
     
 public:
     FaceAugmented(){

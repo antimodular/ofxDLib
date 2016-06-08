@@ -100,16 +100,18 @@ static bool toOf(const dlib::array2d<unsigned char>& inPix, ofPixels& outPix){
     
     return true;
 }
+   
+
     
-    //*/
+//    //*/
 ////------------------------------------------------------------------------
-//void toOf(const array2d<rgb_pixel>& inPix, ofPixels& outPix){
+//void toOf(const dlib::array2d<rgb_pixel>& inPix, ofPixels& outPix){
 //    
 //    int width = inPix.nc();
 //    int height = inPix.nr();
-//    outPix.allocate(height, width,  );
-//    int chans = inPix.getNumChannels();
-//    const unsigned char* data = inPix.getData();
+//    outPix.allocate(height, width,  1);
+//    int chans = 3;
+////    const unsigned char* data = inPix.getData();
 //    for ( unsigned n = 0; n < height;n++ )
 //    {
 //        const unsigned char* v =  &data[n * width *  chans];

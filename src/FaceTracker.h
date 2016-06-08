@@ -65,6 +65,7 @@ namespace ofxDLib {
                 const Face& cur = getCurrent(label);
                 const float smoothingRateCur = getSmoothingRate(label);
                 if(smoothed.count(label) > 0) {
+//                    ofLogNotice("facetracker.h")<<"smoothingRateCur "<<smoothingRateCur;
                     Face& smooth = smoothed[label];
                     smooth.rect.x = ofLerp(smooth.rect.x, cur.rect.x, smoothingRateCur);
                     smooth.rect.y = ofLerp(smooth.rect.y, cur.rect.y, smoothingRateCur);
@@ -140,7 +141,7 @@ namespace ofxDLib {
         Face& assignFeatures(Face & face);
         
         int dlibImg_width, dlibImg_height;
-        
+        ofPixels dlibImg;
     public:
         FaceTracker();
         void setup(string predictorDatFilePath);
@@ -163,6 +164,7 @@ namespace ofxDLib {
         void draw();
         int getWidth();
         int getHeight();
+        ofPixels getPixels();
     };
     
     

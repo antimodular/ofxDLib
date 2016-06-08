@@ -58,6 +58,10 @@ void FaceTracker::findFaces(const ofPixels& pixels, bool bUpscale) {
     
     tracker.track(facesCur);
     
+    
+    dlib::array2d<unsigned char> gimg;
+    assign_image(img,gimg);
+    toOf(gimg,dlibImg);
 }
 
 //--------------------------------------------------------------
@@ -97,6 +101,9 @@ int FaceTracker::getWidth(){
 }
 int FaceTracker::getHeight(){
     return dlibImg_height;
+}
+ofPixels FaceTracker::getPixels(){
+    return dlibImg;
 }
 //--------------------------------------------------------------
 ofRectangle FaceTracker::getRectangle(unsigned int i) {

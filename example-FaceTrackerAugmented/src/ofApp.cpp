@@ -10,6 +10,7 @@ void FaceAugmented::setup(const Face & track) {
     smooth = cur;
     roi = track.rect;
     face = track;
+    age = track.age;
 }
 
 void FaceAugmented::update(const Face & track) {
@@ -18,6 +19,7 @@ void FaceAugmented::update(const Face & track) {
     smooth.interpolate(cur, .5);
     all.addVertex(smooth);
     face = track;
+    age = track.age;
 }
 
 void FaceAugmented::setImage(const ofPixels & pixels) {
@@ -75,7 +77,7 @@ void FaceAugmented::draw() {
     
     // draw label
     ofSetColor(255, 255, 255, alpha);
-    ofDrawBitmapString(ofToString(label), cur);
+    ofDrawBitmapString(ofToString(label)+":"+ofToString(age), cur);
     
     ofPopStyle();
 }
