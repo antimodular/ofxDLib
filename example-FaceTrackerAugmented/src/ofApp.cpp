@@ -98,7 +98,7 @@ void ofApp::setup(){
 void ofApp::update(){
     video.update();
     if(video.isFrameNew()){
-        tracker.findFaces(video.getPixels());
+        tracker.findFaces(video.getPixels(),ofRectangle(0,0,video.getWidth(),video.getHeight()),false);
         vector<FaceAugmented>& facesAugmented = tracker.getFollowers();
         for (auto & face : facesAugmented) {
             face.setImage(video.getPixels());

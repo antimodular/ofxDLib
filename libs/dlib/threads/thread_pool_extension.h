@@ -13,6 +13,7 @@
 #include "../array.h"
 #include "../smart_pointers_thread_safe.h"
 #include "../smart_pointers.h"
+#include <exception>
 
 namespace dlib
 {
@@ -451,6 +452,17 @@ namespace dlib
             bfp_type bfp;
 
             shared_ptr<function_object_copy> function_copy;
+            mutable std::exception_ptr eptr; // non-null if the task threw an exception
+
+            void propagate_exception() const
+            {
+                if (eptr)
+                {
+                    auto tmp = eptr;
+                    eptr = nullptr;
+                    std::rethrow_exception(tmp);
+                }
+            }
 
         };
 
@@ -493,7 +505,25 @@ namespace dlib
         ~thread_pool (
         )
         {
-            impl->shutdown_pool();
+            try
+            {
+                impl->shutdown_pool();
+            }
+            catch (std::exception& e)
+            {
+                std::cerr << "An unhandled exception was inside a dlib::thread_pool when it was destructed." << std::endl;
+                std::cerr << "It's what string is: \n" << e.what() << std::endl;
+                using namespace std;
+                assert(false);
+                abort();
+            }
+            catch (...)
+            {
+                std::cerr << "An unhandled exception was inside a dlib::thread_pool when it was destructed." << std::endl;
+                using namespace std;
+                assert(false);
+                abort();
+            }
         }
 
         void wait_for_task (

@@ -14,7 +14,7 @@
 
 
 // ----------------------------------------------------------------------------------------
-
+//stephan changed nil to c_nil because of some strange compile error
 
 namespace dlib
 {
@@ -162,6 +162,7 @@ namespace dlib
             g.set_label(sink_node, SINK_CUT);
 
             // used to indicate "no parent"
+             // stephan changed nil to c_nil
             const unsigned long c_nil = g.number_of_nodes();
 
             parent.assign(g.number_of_nodes(), c_nil);
@@ -194,6 +195,7 @@ namespace dlib
     private:
 
         unsigned long distance_to_origin (
+                                          // stephan changed nil to c_nil
             const unsigned long c_nil,
             unsigned long p,
             unsigned long 
@@ -237,6 +239,7 @@ namespace dlib
             typedef typename flow_graph::in_edge_iterator in_edge_iterator;
 
             // used to indicate "no parent"
+           
             const unsigned long c_nil = g.number_of_nodes();
 
             while (orphans.size() > 0)

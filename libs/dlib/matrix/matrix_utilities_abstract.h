@@ -18,6 +18,17 @@ namespace dlib
 // ----------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------
 
+    template <typename EXP>
+    constexpr bool is_row_major (
+        const matrix_exp<EXP>&
+    );
+    /*!
+        ensures
+            - returns true if and only if the given matrix expression uses the row_major_layout.
+    !*/
+
+// ----------------------------------------------------------------------------------------
+
     const matrix_exp diag (
         const matrix_exp& m
     );
@@ -1642,7 +1653,7 @@ namespace dlib
         typename T,
         typename P
         >
-    const matrix_exp pixel_to_vector (
+    const matrix<T,pixel_traits<P>::num,1> pixel_to_vector (
         const P& pixel
     );
     /*!

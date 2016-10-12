@@ -4,14 +4,15 @@
 void ofApp::setup(){
     ft.setup("");
     video.setDeviceID(0);
-    video.setup(720, 480);
+//    video.setup(720, 480);
+    video.setup(1920, 1080);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     video.update();
     if(video.isFrameNew()){
-        ft.findFaces(video.getPixels(),false);
+        ft.findFaces(video.getPixels(),ofRectangle(0,0,video.getWidth(),video.getHeight()),false);
     }
 }
 
@@ -19,6 +20,8 @@ void ofApp::update(){
 void ofApp::draw(){
     ofSetColor(255);
     video.draw(0, 0);
+    
+    ofSetLineWidth(4);
     ft.draw();
     
     ofNoFill();
@@ -26,7 +29,7 @@ void ofApp::draw(){
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
+    if(key == 'f') ofToggleFullscreen();
 }
 
 //--------------------------------------------------------------

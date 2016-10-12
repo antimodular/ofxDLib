@@ -1,12 +1,30 @@
 // Copyright (C) 2003  Davis E. King (davis@dlib.net)
 // License: Boost Software License   See LICENSE.txt for the full license.
+
+#ifdef DLIB_ALL_SOURCE_END
+#include "dlib_basic_cpp_build_tutorial.txt"
+#endif
+
 #ifndef DLIB_ALGs_
 #define DLIB_ALGs_
 
 // this file contains miscellaneous stuff                      
 
+// Give people who forget the -std=c++11 option a reminder
+#if (defined(__GNUC__) && ((__GNUC__ >= 4 && __GNUC_MINOR__ >= 8) || (__GNUC__ > 4))) || \
+    (defined(__clang__) && ((__clang_major__ >= 3 && __clang_minor__ >= 4) || (__clang_major__ >= 3)))
+    #if __cplusplus < 201103
+        #error "Dlib requires C++11 support.  Give your compiler the -std=c++11 option to enable it."
+    #endif
+#endif
+
 
 #ifdef _MSC_VER
+
+#if  _MSC_VER < 1900
+#error "dlib versions newer than v19.1 use C++11 and therefore require Visual Studio 2015 or newer."
+#endif
+
 // Disable the following warnings for Visual Studio
 
 // this is to disable the "'this' : used in base member initializer list"
@@ -278,7 +296,7 @@ namespace dlib
             typename A,
             typename B
             >
-        bool operator> (
+        constexpr bool operator> (
             const A& a,
             const B& b
         ) { return b < a; }
@@ -289,7 +307,7 @@ namespace dlib
             typename A,
             typename B
             >
-        bool operator!= (
+        constexpr bool operator!= (
             const A& a,
             const B& b
         ) { return !(a == b); }
@@ -300,7 +318,7 @@ namespace dlib
             typename A,
             typename B
             >
-        bool operator<= (
+        constexpr bool operator<= (
             const A& a,
             const B& b
         ) { return !(b < a); }
@@ -311,7 +329,7 @@ namespace dlib
             typename A,
             typename B
             >
-        bool operator>= (
+        constexpr bool operator>= (
             const A& a,
             const B& b
         ) { return !(a < b); }
@@ -482,6 +500,13 @@ namespace dlib
     };
 
 // ----------------------------------------------------------------------------------------
+
+    struct general_ {};
+    struct special_ : general_ {};
+    template<typename> struct int_ { typedef int type; };
+
+// ----------------------------------------------------------------------------------------
+
 
     /*!A is_same_object 
 
