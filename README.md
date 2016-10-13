@@ -16,9 +16,12 @@ Additional contributions for face landmark tracking come from [m9dfukc](https://
 Remember to download the face model .dat file [http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2](http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2)
 Once downloaded put into the project's bin/data folder or specify it's path when calling FaceTracker.setup("path to the .dat file");
 
-###important
+I hade to make changed to min_cut.h file. I changed all nil to c_nil, otherwise i had compile errors.
+
+###Important
 
 Make sure you select Release instead of Debug. Otherwise it will run super slow.
 ![image](img/selectrelease.png)
+
 
 
