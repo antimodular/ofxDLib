@@ -30,6 +30,19 @@ void FaceTracker::setup(string predictorDatFilePath) {
     }
 }
 
+void FaceTracker::setup_dnn(string predictorDatFilePath) {
+  
+    if(predictorDatFilePath.empty()){
+        predictorDatFilePath = ofToDataPath("mmod_human_face_detector.dat");
+    }
+    ofFile f(predictorDatFilePath);
+    if (f.exists()) {
+        dlib::deserialize(f.getAbsolutePath()) >> net;
+    } else {
+        ofLogError("ofxDLib::FaceTracker","mmod_human_face_detector FILE MISSING!!!");
+    }
+}
+
 //--------------------------------------------------------------
 void FaceTracker::findFaces(const ofPixels& pixels, ofRectangle _roiRect, bool bUpscale) {
 //void FaceTracker::findFaces(const ofPixels& pixels, bool bUpscale) {
@@ -64,6 +77,58 @@ dlib::array2d<dlib::rgb_pixel> img;
     tracker.track(facesCur);
     
 }
+
+
+
+//http://dlib.net/dnn_mmod_face_detection_ex.cpp.html
+void FaceTracker::findFaces_dnn(const ofPixels& pixels, ofRectangle _roiRect, bool bUpscale) {
+    //void FaceTracker::findFaces(const ofPixels& pixels, bool bUpscale) {
+    
+   
+//    net_type net;
+    
+//    dlib::array2d<dlib::rgb_pixel> img;
+    dlib::matrix<dlib::rgb_pixel> img;
+    
+    toDLib(pixels, img);
+    if (bUpscale) pyramid_up(img);
+    
+//    load_image(img, "");
+    
+    dlibImg_width = img.nc();
+    dlibImg_height = img.nr();
+    
+//    std::vector<dlib::rectangle> dets = detector(img);
+    std::vector<Face> facesCur;
+    
+    auto dets = net(img);
+    
+    ofLog()<<"dets.size() "<<dets.size();
+    
+    for (auto&& d : dets){
+    
+//    for (int i=0; i<dets.size(); i++) {
+//        if(_roiRect.inside(toOf(dets[i]).getCenter())){
+//            dlib::full_object_detection shapes = predictor(img, dets[i]);
+//            vector<ofVec3f> landmarks;
+//            for (int j=0; j<shapes.num_parts(); j++) {
+//                ofVec3f p(shapes.part(j).x(), shapes.part(j).y(), 0);
+//                landmarks.push_back(p);
+//            }
+            //
+            Face face;
+            face.rect = toOf(d);
+//            face.landmarks = landmarks;
+//            
+            facesCur.push_back(face);
+        
+//        }
+    }
+    
+    tracker.track(facesCur);
+    
+}
+
 
 //--------------------------------------------------------------
 unsigned int FaceTracker::size() {

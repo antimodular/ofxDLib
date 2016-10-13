@@ -9,6 +9,10 @@
 //#include "dlib/geometry/rectangle.h"
 //#include "dlib/pixel.h"
 //#include "dlib/array2d.h"
+
+#include <dlib/dnn.h>
+#include <dlib/data_io.h>
+
 #include "dlib/image_processing/render_face_detections.h"
 #include "dlib/image_processing/frontal_face_detector.h"
 #include "dlib/image_processing.h"
@@ -67,10 +71,62 @@ static void toDLib(const ofPixels& inPix, dlib::array2d<dlib::rgb_pixel>& outPix
         }
     }
 }
+   
+    template <typename image_type>
     
+    static void toDLib(const ofPixels& inPix, image_type& image){ //dlib::matrix<dlib::rgb_pixel>& outPix){
+
+    int width = inPix.getWidth();
+    int height = inPix.getHeight();
+//    outPix.set_size( height, width );
+        
+        dlib::image_view<image_type> img(image);
+        img.set_size(height, width);
+        
+    int chans = inPix.getNumChannels();
+    const unsigned char* data = inPix.getData();
+    
+    for ( unsigned n = 0; n < height;n++ )
+    {
+        const unsigned char* v =  &data[n * width *  chans];
+        for ( unsigned m = 0; m < width;m++ )
+        {
+//            if ( chans==1 )
+//            {
+//                unsigned char p = v[m];
+//                dlib::assign_pixel( outPix[n][m], p );
+//            }
+//            else{
+                dlib::rgb_pixel p;
+                p.red = v[m*3];
+                p.green = v[m*3+1];
+                p.blue = v[m*3+2];
+                dlib::assign_pixel( img[n][m], p );
+//            }
+        }
+    }
+
+    
+//    for (long r = 0; r < img.nr(); ++r)
+//    {
+//        for (long c = 0; c < img.nc(); ++c)
+//        {
+//            if (*raster >= cmo->ColorCount)
+//                throw image_load_error("Invalid GIF color value");
+//            rgb_pixel p;
+//            p.red = colormap[*raster].Red;
+//            p.green = colormap[*raster].Green;
+//            p.blue = colormap[*raster].Blue;
+//            assign_pixel(img[r][c], p);
+//            ++raster;
+//        }
+//    }
+
+    
+}
     
 static bool toOf(const dlib::matrix<unsigned char>& inMat, ofPixels& outPix){
-        
+    
     int w = inMat.nc();
     int h = inMat.nr();
     
