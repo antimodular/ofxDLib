@@ -17,13 +17,13 @@
 #include "ofMath.h"
 
 namespace ofxDLib {
-    float trackingDistance(const ofRectangle& a, const ofRectangle& b) {
+    static float trackingDistance(const ofRectangle& a, const ofRectangle& b) {
         ofVec3f centerA = a.getCenter();
         ofVec3f centerB = b.getCenter();
         return centerA.distance(centerB);
     }
     
-    float trackingDistance(const ofVec2f& a, const ofVec2f& b) {
+    static float trackingDistance(const ofVec2f& a, const ofVec2f& b) {
         return a.distance(b);
     }
     

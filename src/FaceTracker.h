@@ -38,7 +38,7 @@ namespace ofxDLib {
         vector<ofVec3f> landmarks;
     } Face;
     
-    float trackingDistance(const Face& a, const Face& b) {
+    static float trackingDistance(const Face& a, const Face& b) {
         ofVec3f aCenter = a.rect.getCenter();
         ofVec3f bCenter = b.rect.getCenter();
         return aCenter.distance(bCenter);
