@@ -2,17 +2,21 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ft.setup("");
+    //~ ft.setup("");
+    ft.setup_dnn("");
     video.setDeviceID(0);
-    video.setup(720, 480);
+    //~ video.setup(720, 480);
+    video.setup(320, 240);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     video.update();
-    if(video.isFrameNew()){
-        ft.findFaces(video.getPixels(),ofRectangle(0,0,video.getWidth(),video.getHeight()),false);
-    }
+    if (video.isFrameNew()) return;
+
+    //~ ft.findFaces(video.getPixels(),
+    ft.findFaces_dnn(video.getPixels(),
+		ofRectangle(0,0,video.getWidth(),video.getHeight()),false);
 }
 
 //--------------------------------------------------------------
