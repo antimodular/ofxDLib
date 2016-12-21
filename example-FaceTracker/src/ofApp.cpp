@@ -4,7 +4,9 @@
 void ofApp::setup(){
     ft.setup("");
     video.setDeviceID(0);
-    video.setup(720, 480);
+//    video.setup(720, 480);
+     video.setup(1280,720);
+//     video.setup(1920,1080);
 }
 
 //--------------------------------------------------------------
@@ -20,10 +22,12 @@ void ofApp::draw(){
     ofSetColor(255);
     video.draw(0, 0);
     ft.draw();
+    
+    ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()), 10,10);
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
+    if(key == 'f')  ofToggleFullscreen();
 }
 
 //--------------------------------------------------------------

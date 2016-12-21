@@ -3,6 +3,8 @@
 #ifndef DLIB_ALL_SOURCe_
 #define DLIB_ALL_SOURCe_
 
+#define DLIB_NO_GUI_SUPPORT
+
 #if defined(DLIB_ALGs_) || defined(DLIB_PLATFORm_)
 #include "../dlib_basic_cpp_build_tutorial.txt"
 #endif
