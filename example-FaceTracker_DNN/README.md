@@ -1,4 +1,4 @@
-This is a version of the FaceTracker using DNN, linked with a version of dlib statically compiled with CUDA on Linux.
+This is a version of the FaceTracker using DNN, to link with a version of dlib statically compiled with CUDA on Linux.
 
 Instructions:
 [Install CUDA](http://developer.download.nvidia.com/compute/cuda/7.5/Prod/docs/sidebar/CUDA_Installation_Guide_Linux.pdf),
